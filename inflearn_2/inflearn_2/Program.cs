@@ -9,7 +9,7 @@ namespace inflearn_2
             Player player = new Player();
             Board board = new Board();
             board.Initialize(25,player);
-            player.Initialize(1,1,board._size-1,board._size-1,board);
+            player.Initialize(1,1,board);
 
             Console.CursorVisible = false;
 

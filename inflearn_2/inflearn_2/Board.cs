@@ -8,8 +8,12 @@ namespace inflearn_2
     class Board
     {
         const char CIRCLE = '\u25cf';
-        public TileType[,] Tile;
-        public int _size;
+        public TileType[,] Tile { get; private set; }
+        public int _size { get; private set; }
+
+        public int DestX { get; private set; }
+        public int DestY { get; private set; }
+
         Player _player;
 
         public enum TileType
@@ -25,6 +29,9 @@ namespace inflearn_2
 
             Tile = new TileType[size, size];
             _size = size;
+
+            DestX = _size - 2;
+            DestY = _size - 2;
 
             //Mazes for Programmers
 
@@ -184,6 +191,11 @@ namespace inflearn_2
                     if (x == _player.PosX && y == _player.PosY)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write(CIRCLE);
+                        continue;
+                    }else if (x == DestX && y == DestY)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write(CIRCLE);
                         continue;
                     }
