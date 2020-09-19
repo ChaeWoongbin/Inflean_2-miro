@@ -8,8 +8,9 @@ namespace inflearn_2
     class Board
     {
         const char CIRCLE = '\u25cf';
-        public TileType[,] _tile;
+        public TileType[,] Tile;
         public int _size;
+        Player _player;
 
         public enum TileType
         {
@@ -17,16 +18,86 @@ namespace inflearn_2
             Wall,
         }
 
-        public void Initialize(int size)
+        public void Initialize(int size, Player player)
         {
+            _player = player;
             if (size % 2 == 0) return; // 미로는 짝수
 
-            _tile = new TileType[size, size];
+            Tile = new TileType[size, size];
             _size = size;
 
             //Mazes for Programmers
 
-            GenerateByBinaryTree();
+            //GenerateByBinaryTree();
+            GenerateBySideWinder();
+        }
+
+        void GenerateBySideWinder()
+        {
+            // 벽 생성
+            for (int y = 0; y < _size; y++)
+            {
+                for (int x = 0; x < _size; x++)
+                {
+                    //if(x==0 || x == _size -1 || y ==0 || y == _size -1)
+                    if (x % 2 == 0 || y % 2 == 0)
+                    {
+                        Tile[y, x] = TileType.Wall;
+                    }
+                    else
+                    {
+                        Tile[y, x] = TileType.Empty;
+                    }
+                }
+            }
+
+            // 길뚫기
+            Random rand = new Random();
+            for (int y = 0; y < _size; y++)
+            {
+                int count = 1;
+                for (int x = 0; x < _size; x++)
+                {
+                    //if(x==0 || x == _size -1 || y ==0 || y == _size -1)
+                    if (x % 2 == 0 || y % 2 == 0)
+                    {
+                        continue;
+                    }
+
+                    if (y == _size - 2 && x == _size - 2)
+                    {
+                        continue;
+                    }
+
+                    // 외곽벽 
+                    if (y == _size - 2)
+                    {
+                        Tile[y, x + 1] = TileType.Empty;
+                        continue;
+                    }
+                    // 외곽벽 
+                    if (x == _size - 2)
+                    {
+                        Tile[y + 1, x] = TileType.Empty;
+                        continue;
+                    }
+
+                    // 랜덤
+                    if (rand.Next(0, 2) == 0)
+                    {
+                        Tile[y, x + 1] = TileType.Empty;
+                        count++;
+                    }
+                    else
+                    {
+                        int randomIndex = rand.Next(0, count);
+                        Tile[y + 1, x - randomIndex * 2] = TileType.Empty;
+                        count = 1;
+                    }
+
+                }
+            }
+
         }
 
         void GenerateByBinaryTree()
@@ -39,11 +110,11 @@ namespace inflearn_2
                     //if(x==0 || x == _size -1 || y ==0 || y == _size -1)
                     if (x % 2 == 0 || y % 2 == 0)
                     {
-                        _tile[y, x] = TileType.Wall;
+                        Tile[y, x] = TileType.Wall;
                     }
                     else
                     {
-                        _tile[y, x] = TileType.Empty;
+                        Tile[y, x] = TileType.Empty;
                     }
                 }
             }
@@ -70,24 +141,24 @@ namespace inflearn_2
                     // 외곽벽 
                     if (y == _size - 2)
                     {
-                        _tile[y, x + 1] = TileType.Empty;
+                        Tile[y, x + 1] = TileType.Empty;
                         continue;
                     }
                     // 외곽벽 
                     if (x == _size - 2)
                     {
-                        _tile[y + 1, x] = TileType.Empty;
+                        Tile[y + 1, x] = TileType.Empty;
                         continue;
                     }
 
                     // 랜덤
                     if (rand.Next(0, 2) == 0)
                     {
-                        _tile[y, x + 1] = TileType.Empty;
+                        Tile[y, x + 1] = TileType.Empty;
                     }
                     else
                     {
-                        _tile[y + 1, x] = TileType.Empty;
+                        Tile[y + 1, x] = TileType.Empty;
                     }
                 }
             }
@@ -110,8 +181,14 @@ namespace inflearn_2
             {
                 for (int x = 0; x < _size; x++)
                 {
+                    if (x == _player.PosX && y == _player.PosY)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write(CIRCLE);
+                        continue;
+                    }
 
-                    Console.ForegroundColor = GetTileColor(_tile[y,x]);
+                    Console.ForegroundColor = GetTileColor(Tile[y,x]);
                     Console.Write(CIRCLE);
                 }
                 Console.WriteLine();

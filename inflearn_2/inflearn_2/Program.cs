@@ -6,8 +6,10 @@ namespace inflearn_2
     {
         static void Main(string[] args)
         {
+            Player player = new Player();
             Board board = new Board();
-            board.Initialize(25);
+            board.Initialize(25,player);
+            player.Initialize(1,1,board._size-1,board._size-1,board);
 
             Console.CursorVisible = false;
 
@@ -18,6 +20,18 @@ namespace inflearn_2
 
             while (true)
             {
+                #region 프레임관리
+                int currentTick = System.Environment.TickCount;
+                if(currentTick - lastTick < WAIT_TICK)
+                {
+                    continue;
+                }
+                int deltaTick = currentTick - lastTick;
+                lastTick = currentTick;
+                #endregion
+
+                player.Update(deltaTick);
+
                 Console.SetCursorPosition(0,0);
                 board.Render();
             }
