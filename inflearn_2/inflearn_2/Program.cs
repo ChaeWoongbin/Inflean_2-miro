@@ -18,6 +18,7 @@ namespace inflearn_2
 
             int lastTick = 0;
 
+
             while (true)
             {
                 #region 프레임관리
