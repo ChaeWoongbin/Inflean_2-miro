@@ -7,6 +7,7 @@ namespace inflearn_2
    
     class Board
     {
+        public bool complete = false;
         const char CIRCLE = '\u25cf';
         public TileType[,] Tile { get; private set; }
         public int _size { get; private set; }
@@ -197,6 +198,7 @@ namespace inflearn_2
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.Write(CIRCLE);
+                        //complete = true;
                         continue;
                     }
 

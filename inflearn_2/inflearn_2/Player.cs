@@ -91,6 +91,7 @@ namespace inflearn_2
             {
                 if (lastIndex >= _points.Count)
                 {
+                    _board.complete = true;
                     return;
                 }
                 _sumTick = 0;

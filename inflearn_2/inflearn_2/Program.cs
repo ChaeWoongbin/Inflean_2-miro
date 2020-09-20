@@ -18,6 +18,7 @@ namespace inflearn_2
 
             int lastTick = 0;
 
+            board.complete = false;
 
             while (true)
             {
@@ -31,11 +32,22 @@ namespace inflearn_2
                 lastTick = currentTick;
                 #endregion
 
+                if (board.complete)
+                {
+                    player = new Player();
+                    board = new Board();
+                    board.Initialize(25, player);
+                    player.Initialize(1, 1, board);
+
+                    board.complete = false;
+                }
+
                 player.Update(deltaTick);
 
                 Console.SetCursorPosition(0,0);
                 board.Render();
             }
         }
+
     }
 }
