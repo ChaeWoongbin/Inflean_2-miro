@@ -8,7 +8,7 @@ namespace inflearn_2
         {
             Player player = new Player();
             Board board = new Board();
-            board.Initialize(25,player);
+            board.Initialize(35,player);
             player.Initialize(1,1,board);
 
             Console.CursorVisible = false;
@@ -36,7 +36,7 @@ namespace inflearn_2
                 {
                     player = new Player();
                     board = new Board();
-                    board.Initialize(25, player);
+                    board.Initialize(35, player);
                     player.Initialize(1, 1, board);
 
                     board.complete = false;

@@ -81,7 +81,7 @@ namespace inflearn_2
 
         }
 
-        const int MOVE_TICK = 50;
+        const int MOVE_TICK = 30;
         int _sumTick = 0;
         int lastIndex = 0;
         public void Update(int deltaTick)
