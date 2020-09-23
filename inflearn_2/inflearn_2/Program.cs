@@ -8,7 +8,7 @@ namespace inflearn_2
         {
             Player player = new Player();
             Board board = new Board();
-            board.Initialize(35,player);
+            board.Initialize(25,player);
             player.Initialize(1,1,board);
 
             Console.CursorVisible = false;
@@ -31,17 +31,17 @@ namespace inflearn_2
                 int deltaTick = currentTick - lastTick;
                 lastTick = currentTick;
                 #endregion
-
+                /*
                 if (board.complete)
                 {
                     player = new Player();
                     board = new Board();
-                    board.Initialize(35, player);
+                    board.Initialize(25, player);
                     player.Initialize(1, 1, board);
 
                     board.complete = false;
                 }
-
+                */
                 player.Update(deltaTick);
 
                 Console.SetCursorPosition(0,0);

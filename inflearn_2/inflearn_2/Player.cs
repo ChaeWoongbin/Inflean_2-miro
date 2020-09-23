@@ -33,14 +33,79 @@ namespace inflearn_2
         List<position> _points = new List<position>();
 
 
-
         public void Initialize(int posX, int posY, Board board)
         {
             PosX = posX;
             PosY = posY;
-
             _board = board;
 
+
+            //RightHands(board); // 우수법
+            BFS();
+
+        }
+
+        void BFS()
+        {
+            int[] deltaY = new int[] { -1, 0, 1, 0 };
+            int[] deltaX = new int[] { 0, -1, 0, 1 };
+
+            bool[,] found = new bool[_board._size, _board._size];
+            position[,] parent = new position[_board._size, _board._size];
+
+            Queue<position> q = new Queue<position>();
+
+            q.Enqueue(new position(PosY, PosX));
+            found[PosY, PosX] = true;
+            parent[PosY, PosX] = new position(PosY, PosX);
+
+            while (q.Count > 0)
+            {
+                position pos = q.Dequeue();
+                int nowY = pos.Y;
+                int nowX = pos.X; 
+
+                for(int i=0; i < 4; i++)
+                {
+                    int nextY = nowY + deltaY[i];
+                    int nextX = nowX + deltaX[i];
+
+                    if(nextX < 0 || nextX >= _board._size || nextY < 0 || nextY >= _board._size)
+                    {
+                        continue;
+                    }
+
+                    if(_board.Tile[nextY, nextX] == Board.TileType.Wall)
+                    {
+                        continue;
+                    }
+                    if(found[nextY, nextX])
+                    {
+                        continue;
+                    }
+
+                    q.Enqueue(new position(nextY,nextX));
+                    found[nextY, nextX] = true;
+                    parent[nextY, nextX] = new position(nowY, nowX);
+                }
+            }
+
+            int y = _board.DestY;
+            int x = _board.DestX;
+
+            while (parent[y,x].Y != y || parent[y, x].X != x)
+            {
+                _points.Add(new position(y,x));
+                position pos = parent[y, x];
+                y = pos.Y;
+                x = pos.X;
+            }
+            _points.Add(new position(y, x));
+            _points.Reverse();
+        }
+
+        void RightHands(Board board)
+        {
             // 현재 보는 방향기준, 좌표변화
             int[] frontY = new int[] { -1, 0, 1, 0 };
             int[] frontX = new int[] { 0, -1, 0, 1 };
@@ -78,12 +143,13 @@ namespace inflearn_2
                 }
 
             }
-
         }
+
 
         const int MOVE_TICK = 30;
         int _sumTick = 0;
         int lastIndex = 0;
+
         public void Update(int deltaTick)
         {
             _sumTick += deltaTick;
